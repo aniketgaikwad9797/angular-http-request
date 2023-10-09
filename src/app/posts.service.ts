@@ -19,7 +19,7 @@ export class PostsService {
   }
 
   fetchPosts() {
-    this.http
+    return this.http
       .get(
         'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json'
       )
@@ -33,8 +33,5 @@ export class PostsService {
           return postsData;
         })
       )
-      .subscribe((posts) => {
-        console.log(posts);
-      });
   }
 }
