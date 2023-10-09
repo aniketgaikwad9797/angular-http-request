@@ -11,7 +11,15 @@ export class AppComponent implements OnInit {
 
   constructor(private http: HttpClient) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.http
+      .get(
+        'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json'
+      )
+      .subscribe((posts) => {
+        console.log(posts);
+      });
+  }
 
   onCreatePost(postData: { title: string; content: string }) {
     // Send Http request
@@ -29,6 +37,13 @@ export class AppComponent implements OnInit {
 
   onFetchPosts() {
     // Send Http request
+    this.http
+      .get(
+        'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json'
+      )
+      .subscribe((posts) => {
+        console.log(posts);
+      });
   }
 
   onClearPosts() {
