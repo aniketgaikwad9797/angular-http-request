@@ -10,6 +10,7 @@ import { Posts } from './post.model';
 })
 export class AppComponent implements OnInit {
   loadedPosts = [];
+  isFetching = false;
 
   constructor(private http: HttpClient) {}
 
@@ -41,6 +42,7 @@ export class AppComponent implements OnInit {
   }
 
   private fetchRequest() {
+    this.isFetching = true;
     this.http
       .get(
         'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json'
@@ -56,6 +58,7 @@ export class AppComponent implements OnInit {
         })
       )
       .subscribe((posts) => {
+        this.isFetching = false;
         this.loadedPosts = posts;
       });
   }
