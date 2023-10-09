@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
 import { Posts } from './post.model';
+import { PostsService } from './posts.service';
 
 @Component({
   selector: 'app-root',
@@ -12,54 +11,25 @@ export class AppComponent implements OnInit {
   loadedPosts = [];
   isFetching = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private postsService: PostsService) {}
 
   ngOnInit() {
-    this.fetchRequest();
+    this.onFetchPosts();
   }
 
   onCreatePost(postData: { title: string; content: string }) {
     // Send Http request
     //console.log(postData);
     //If the post observable is not subscribed the request won't even be sent
-    this.http
-      .post<{ name: string }>(
-        'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json',
-        postData
-      )
-      .subscribe((responseData) => {
-        console.log(responseData);
-      });
+    this.postsService.createAndStorePosts(postData);
   }
 
   onFetchPosts() {
     // Send Http request
-    this.fetchRequest();
+    this.postsService.fetchPosts();
   }
 
   onClearPosts() {
     // Send Http request
-  }
-
-  private fetchRequest() {
-    this.isFetching = true;
-    this.http
-      .get(
-        'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json'
-      )
-      .pipe(
-        map((data) => {
-          const postsData: Posts[] = [];
-          for (const key in data) {
-            if (data.hasOwnProperty(key))
-              postsData.push({ ...data[key], id: key });
-          }
-          return postsData;
-        })
-      )
-      .subscribe((posts) => {
-        this.isFetching = false;
-        this.loadedPosts = posts;
-      });
   }
 }
