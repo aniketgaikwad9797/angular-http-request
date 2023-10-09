@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
     //console.log(postData);
     //If the post observable is not subscribed the request won't even be sent
     this.http
-      .post<{name: string}>(
+      .post<{ name: string }>(
         'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json',
         postData
       )
@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
         })
       )
       .subscribe((posts) => {
-        console.log(posts);
+        this.loadedPosts = posts;
       });
   }
 }
