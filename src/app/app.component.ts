@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-   this.fetchRequest();
+    this.fetchRequest();
   }
 
   onCreatePost(postData: { title: string; content: string }) {
@@ -31,20 +32,30 @@ export class AppComponent implements OnInit {
 
   onFetchPosts() {
     // Send Http request
-    this.fetchRequest()
+    this.fetchRequest();
   }
 
   onClearPosts() {
     // Send Http request
   }
 
-  private fetchRequest(){
+  private fetchRequest() {
     this.http
-    .get(
-      'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json'
-    )
-    .subscribe((posts) => {
-      console.log(posts);
-    });
+      .get(
+        'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json'
+      )
+      .pipe(
+        map((data) => {
+          const postsData = [];
+          for (const key in data) {
+            if (data.hasOwnProperty(key))
+              postsData.push({ ...data[key], id: key });
+          }
+          return postsData;
+        })
+      )
+      .subscribe((posts) => {
+        console.log(posts);
+      });
   }
 }
