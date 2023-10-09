@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
+import { Posts } from './post.model';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,7 @@ export class AppComponent implements OnInit {
     //console.log(postData);
     //If the post observable is not subscribed the request won't even be sent
     this.http
-      .post(
+      .post<{name: string}>(
         'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json',
         postData
       )
@@ -46,7 +47,7 @@ export class AppComponent implements OnInit {
       )
       .pipe(
         map((data) => {
-          const postsData = [];
+          const postsData: Posts[] = [];
           for (const key in data) {
             if (data.hasOwnProperty(key))
               postsData.push({ ...data[key], id: key });
