@@ -12,13 +12,7 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http
-      .get(
-        'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json'
-      )
-      .subscribe((posts) => {
-        console.log(posts);
-      });
+   this.fetchRequest();
   }
 
   onCreatePost(postData: { title: string; content: string }) {
@@ -37,16 +31,20 @@ export class AppComponent implements OnInit {
 
   onFetchPosts() {
     // Send Http request
-    this.http
-      .get(
-        'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json'
-      )
-      .subscribe((posts) => {
-        console.log(posts);
-      });
+    this.fetchRequest()
   }
 
   onClearPosts() {
     // Send Http request
+  }
+
+  private fetchRequest(){
+    this.http
+    .get(
+      'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json'
+    )
+    .subscribe((posts) => {
+      console.log(posts);
+    });
   }
 }
