@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Posts } from './post.model';
-import { map } from 'rxjs';
+import { Subject, map } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PostsService {
+  errorSubject = new Subject<string>();
   constructor(private http: HttpClient) {}
 
   createAndStorePosts(postData: { title: string; content: string }) {
@@ -13,9 +14,14 @@ export class PostsService {
         'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json',
         postData
       )
-      .subscribe((responseData) => {
-        console.log(responseData);
-      });
+      .subscribe(
+        (responseData) => {
+          console.log(responseData);
+        },
+        (error) => {
+          this.errorSubject.next(error.message);
+        }
+      );
   }
 
   fetchPosts() {
@@ -36,9 +42,8 @@ export class PostsService {
   }
 
   deletePosts() {
-    return this.http
-      .delete(
-        'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json'
-      )
+    return this.http.delete(
+      'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json'
+    );
   }
 }
