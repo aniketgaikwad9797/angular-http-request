@@ -32,6 +32,13 @@ export class PostsService {
           }
           return postsData;
         })
+      );
+  }
+
+  deletePosts() {
+    return this.http
+      .delete(
+        'https://recipe-shopping-list-f535e-default-rtdb.firebaseio.com/posts.json'
       )
   }
 }
