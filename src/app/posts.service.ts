@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Posts } from './post.model';
 import { Subject, map } from 'rxjs';
 
@@ -32,6 +32,7 @@ export class PostsService {
           headers: new HttpHeaders({
             customHeader: 'heelo there!',
           }),
+          params: new HttpParams().set('print', 'pretty'),
         }
       )
       .pipe(
